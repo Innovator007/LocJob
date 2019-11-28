@@ -12,7 +12,7 @@ module.exports = {
 
 ```
 
-Now open a terminal and change into the project directory and run the followinf commands to start the app in expo
+Now open a terminal and change into the project directory and run the following commands to start the app in expo
 
 ```
 npm install
