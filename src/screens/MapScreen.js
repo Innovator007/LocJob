@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Dimensions, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, Dimensions, BackHandler, Alert, ActivityIndicator, TextInput } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
+import { NavigationEvents } from 'react-navigation';
 import { fetchJobs } from '../actions';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -21,11 +22,52 @@ class MapScreen extends Component {
 			longitude: -122
 		},
 		query: "",
-		loading: false
+		loading: false,
+		isFocused: false
 	}
 
 	componentDidMount() {
-		this.setState({ mapLoaded: true });
+		this.setState({ mapLoaded: true, isFocused: true });
+		BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+	}
+
+	componentWillUnmount(){
+    	BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+  	}
+
+  	componentWillReceiveProps(nextProps) {
+  		if(nextProps.auth.token === null) {
+  			this.props.navigation.navigate('auth');
+  		}
+  	}
+
+  	focused = (payload) => {
+  		this.setState({ isFocused: true });
+  	}
+
+  	removeBackHandler = (payload) => {
+  		this.setState({ isFocused: false });
+  	}
+
+  	onBackPress() {
+	  	if(this.props.navigation.state.routeName === "map" && this.state.isFocused) {
+	  		Alert.alert(
+	          'Exit Application',
+	          'Do you really want to exit?', [{
+	              text: 'Cancel',
+	              onPress: () => console.log('Cancel Pressed'),
+	              style: 'cancel'
+	          }, {
+	              text: 'OK',
+	              onPress: () => BackHandler.exitApp()
+	          }, ], {
+	              cancelable: false
+	          }
+	      )
+	      return true;
+	  	} else {
+	  		return false;
+	  	}
 	}
 
 	_getLocationAsync = async () => {
@@ -105,6 +147,12 @@ class MapScreen extends Component {
 						onPress={this._getLocationAsync}
 					/>
 				</View>
+				<NavigationEvents
+				onWillFocus={payload => this.focused(payload)}
+  				onDidFocus={payload => this.focused(payload)}
+			      onWillBlur={payload => this.removeBackHandler(payload)}
+			      onDidBlur={payload => this.removeBackHandler(payload)}
+			    />
 				<View style={styles.buttonContainer}>
 					<Button 
 						buttonStyle={{ paddingVertical: 15, backgroundColor:"#03A9F4" }}
@@ -167,4 +215,10 @@ const styles = {
 	}
 }
 
-export default connect(null, { fetchJobs })(MapScreen);
+function mapStateToProps({ auth }) {
+	return {
+		auth
+	}
+}
+
+export default connect(mapStateToProps, { fetchJobs })(MapScreen);

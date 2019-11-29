@@ -37,9 +37,10 @@ class WelcomeScreen extends Component {
 		}
 	}
 
-	onSlidesComplete = () => {
+	onSlidesComplete = async () => {
 		this.props.navigation.navigate('auth');
 	}
+
 	render() {
 		if(this.state.token === null) {
 			return <AppLoading />;

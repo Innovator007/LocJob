@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { isLoggedIn, clearlikedJobs } from '../actions';
-import { View, Text, Platform, ActivityIndicator, Image } from 'react-native';
+import { View, Text, Platform, ActivityIndicator, Image, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 
 class SettingsScreen extends Component {
 	async componentDidMount() {
 		await this.props.isLoggedIn();
 	}
-
 	componentWillReceiveProps(nextProps) {
 		this.onAuthInComplete(nextProps);
 	}
@@ -17,6 +16,11 @@ class SettingsScreen extends Component {
 		if(!props.token) {
 			this.props.navigation.navigate('auth');
 		}
+	}
+
+	logout = async () => {
+		await AsyncStorage.setItem('fb_token', '');
+		this.props.navigation.navigate('auth');
 	}
 
 	renderContent = () => {
@@ -41,6 +45,12 @@ class SettingsScreen extends Component {
 						    title='CLEAR SAVED JOBS' 
 						    titleStyle={{fontFamily: 'google-sans'}}
 						    onPress={this.props.clearlikedJobs}
+						/>
+						<Button
+							buttonStyle={{ backgroundColor:"#03A9F4", marginTop: 15}}
+						    title='LOGOUT' 
+						    titleStyle={{fontFamily: 'google-sans'}}
+						    onPress={this.logout}
 						/>
 					</View>
 				</View>

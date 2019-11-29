@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text, AsyncStorage, BackHandler, Alert, } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { facebookLogin, isLoggedIn } from '../actions';
 import Loading from '../components/Loading';
@@ -12,10 +12,34 @@ class AuthScreen extends Component {
 	componentDidMount() {
 		this.props.isLoggedIn();
 		this.onAuthComplete(this.props);
+		BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.onAuthComplete(nextProps);
+	}
+
+	componentWillUnmount(){
+    	BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+  	}
+
+	onBackPress() {
+	  	if(this.props.navigation.state.routeName === "auth") {
+	  		Alert.alert(
+	          'Exit Application',
+	          'Do you really want to exit?', [{
+	              text: 'Cancel',
+	              onPress: () => console.log('Cancel Pressed'),
+	              style: 'cancel'
+	          }, {
+	              text: 'OK',
+	              onPress: () => BackHandler.exitApp()
+	          }, ], {
+	              cancelable: false
+	          }
+	      )
+	      return true;
+	  	}
 	}
 
 	onAuthComplete = (props) => {
