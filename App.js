@@ -13,7 +13,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
           <View style={styles.container}>
             <StatusBar backgroundColor="#fff" barStyle="dark-content" />
             <MainNavigator />

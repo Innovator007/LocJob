@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "LocJob",
-    "slug": "locjob",
+    "slug": "job",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
