@@ -5,7 +5,16 @@ import { LIKE_JOBS, CLEAR_LIKE_JOBS } from '../actions/types';
 export default function(state=[], action) {
 	switch(action.type) {
 		case REHYDRATE:
-			return action.payload.liked_jobs || [];
+			try {
+				const saved = action.payload.liked_jobs;
+				if(saved && saved.constructor === Array) {
+					return saved;
+				} else {
+					return [];
+				}
+			} catch(e) {
+				return [];
+			}
 		case LIKE_JOBS:
 			return _.uniqBy([action.payload, ...state], "id");
 		case CLEAR_LIKE_JOBS:
