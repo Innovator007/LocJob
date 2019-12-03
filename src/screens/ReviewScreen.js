@@ -26,7 +26,7 @@ class ReviewScreen extends Component {
 			});
 		} else {
 			return (
-				<View style={{flex:1,height: Dimensions.get('window').height,justifyContent:'center',alignItems:'center',marginHorizontal:15}}>
+				<View style={{flex:1,height: Dimensions.get('window').height-100,justifyContent:'center',alignItems:'center',marginHorizontal:15}}>
 					<Icon name='emoji-sad' type="entypo" size={100} />
 					<Text style={{marginTop:10,fontFamily:'google-sans',fontSize: 25,textAlign:'center'}}>It's empty in here, no saved jobs!</Text>
 					<Text style={{marginTop:10,fontFamily:'google-sans',fontSize: 20,textAlign:'center'}}>Right Swipe on a job to like it.</Text>

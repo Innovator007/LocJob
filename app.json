@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "LocJob",
-    "slug": "job",
+    "slug": "locjob",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.innovator007.locjob"
+    },
+    "android": {
+      "package": "com.innovator007.locjob"
     }
   }
 }
