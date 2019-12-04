@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { isLoggedIn, clearlikedJobs } from '../actions';
-import { View, Text, Platform, ActivityIndicator, Image, AsyncStorage } from 'react-native';
+import { View, Text, Platform, ActivityIndicator, Alert, Image, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 
 class SettingsScreen extends Component {
@@ -16,6 +16,38 @@ class SettingsScreen extends Component {
 		if(!props.token) {
 			this.props.navigation.navigate('auth');
 		}
+	}
+
+	logoutConfirmation = () => {
+		Alert.alert(
+		  'LOGOUT',
+		  'Are you sure you wanna logout?',
+		  [
+		    {
+		      text: 'Cancel',
+		      onPress: () => console.log('Cancel Pressed'),
+		      style: 'cancel',
+		    },
+		    {text: 'Yes', onPress: () => this.logout()},
+		  ],
+		  {cancelable: false},
+		);
+	}
+
+	confirmClearJobs = () => {
+		Alert.alert(
+		  'Clear Saved Jobs',
+		  'This will delete all your saved jobs, are you sure?',
+		  [
+		    {
+		      text: 'Cancel',
+		      onPress: () => console.log('Cancel Pressed'),
+		      style: 'cancel',
+		    },
+		    {text: 'Delete', onPress: () => this.props.clearlikedJobs()},
+		  ],
+		  {cancelable: false},
+		);
 	}
 
 	logout = async () => {
@@ -44,13 +76,13 @@ class SettingsScreen extends Component {
 							icon={{ name: 'delete-forever',color: '#fff' }}
 						    title='CLEAR SAVED JOBS' 
 						    titleStyle={{fontFamily: 'google-sans'}}
-						    onPress={this.props.clearlikedJobs}
+						    onPress={() => this.confirmClearJobs()}
 						/>
 						<Button
 							buttonStyle={{ backgroundColor:"#03A9F4", marginTop: 15}}
 						    title='LOGOUT' 
 						    titleStyle={{fontFamily: 'google-sans'}}
-						    onPress={this.logout}
+						    onPress={this.logoutConfirmation}
 						/>
 					</View>
 				</View>

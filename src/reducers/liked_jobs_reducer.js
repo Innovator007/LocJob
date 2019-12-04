@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/es/constants';
-import { LIKE_JOBS, CLEAR_LIKE_JOBS } from '../actions/types';
+import { LIKE_JOBS, CLEAR_LIKE_JOBS, DELETE_JOB } from '../actions/types';
 
 export default function(state=[], action) {
 	switch(action.type) {
@@ -15,6 +15,10 @@ export default function(state=[], action) {
 			} catch(e) {
 				return [];
 			}
+		case DELETE_JOB:
+			return state.filter(job => {
+				return job.id !== action.payload
+			});
 		case LIKE_JOBS:
 			return _.uniqBy([action.payload, ...state], "id");
 		case CLEAR_LIKE_JOBS:

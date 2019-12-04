@@ -4,7 +4,7 @@ import axios from 'axios';
 import reverseGeocode from 'latlng-to-zip';
 import qs from 'qs';
 import { googleApiKey, facebookAppKey } from '../../config';
-import { FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FETCH_JOBS, LIKE_JOBS, CLEAR_LIKE_JOBS } from './types';
+import { FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FETCH_JOBS, LIKE_JOBS, CLEAR_LIKE_JOBS, DELETE_JOB } from './types';
 
 const JOB_ROOT_URL = 'https://jobs.github.com/positions.json?';
 
@@ -19,6 +19,13 @@ export const likeJobs = (job) => {
 	return {
 		type: LIKE_JOBS,
 		payload: job
+	}
+}
+
+export const deleteJob = (jobId) => {
+	return {
+		type: DELETE_JOB,
+		payload: jobId
 	}
 }
 

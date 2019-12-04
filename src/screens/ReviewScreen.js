@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ScrollView, View, Text, Platform, Linking, Dimensions } from 'react-native';
+import { 
+	ScrollView, 
+	View, 
+	Text, 
+	Platform, 
+	Linking, 
+	Dimensions, 
+	TouchableWithoutFeedback,
+	Alert
+} from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
+import { deleteJob } from '../actions';
 
 class ReviewScreen extends Component {
+	onJobDelete = (jobId) => {
+		Alert.alert(
+		  'Delete Saved Job',
+		  'Do you really want to delete this job?',
+		  [
+		    {
+		      text: 'Nah!',
+		      onPress: () => console.log('Cancel Pressed'),
+		      style: 'cancel',
+		    },
+		    {text: 'Confirm', onPress: () => this.props.deleteJob(jobId)},
+		  ],
+		  {cancelable: false},
+		);
+	}
+
 	renderLikedJobs = () => {
 		if(this.props.liked_jobs.length > 0) {
 			return this.props.liked_jobs.map(likedJob => {
@@ -13,6 +39,11 @@ class ReviewScreen extends Component {
 						<View>
 							<Text style={{fontFamily: "google-sans", fontSize: 18}}>{company}</Text>
 							<Text style={{fontFamily: "google-sans", fontSize: 16}}>Location: {location}</Text>
+							<TouchableWithoutFeedback onPress={() => this.onJobDelete(likedJob.id)}>
+								<View style={styles.removeIcon}>
+									<Icon name="delete" color='#121212' />
+								</View>
+							</TouchableWithoutFeedback>
 						</View>
 						<Button
 							buttonStyle={{ backgroundColor:"#03A9F4", marginTop: 15 }}
@@ -45,6 +76,11 @@ class ReviewScreen extends Component {
 	render() {
 		return (
 			<ScrollView>
+				{ this.props.liked_jobs.length > 0 ? 
+					<View>	
+						<Text style={styles.savedNumberTitle}>{ this.props.liked_jobs.length } saved jobs</Text>
+					</View> : null 
+				}
 				{ this.renderLikedJobs() }
 			</ScrollView>
 		);
@@ -57,4 +93,18 @@ function mapStateToProps({ liked_jobs }) {
 	}
 }
 
-export default connect(mapStateToProps, null)(ReviewScreen);
+const styles = {
+	savedNumberTitle: {
+		fontFamily: 'google-sans',
+		fontSize: 20,
+		marginVertical: 5,
+		textAlign: 'center'
+	},
+	removeIcon: {
+		position: 'absolute',
+		right: 5,
+		top: 0
+	}
+}
+
+export default connect(mapStateToProps, { deleteJob })(ReviewScreen);
