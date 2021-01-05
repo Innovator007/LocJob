@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "city-to-coords": "^1.1.0",
     "expo": "^35.0.0",
     "expo-facebook": "~7.0.0",
