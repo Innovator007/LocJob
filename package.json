@@ -18,7 +18,7 @@
     "expo-permissions": "~7.0.0",
     "latlng-to-zip": "0.0.2",
     "lodash": "^4.17.15",
-    "qs": "^6.9.0",
+    "qs": "^6.9.7",
     "querystring": "^0.2.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
